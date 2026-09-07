@@ -3,77 +3,34 @@
 ```
 ██████╗ ███████╗ ██████╗ ██████╗ ███╗   ██╗██╗  ██╗
 ██╔══██╗██╔════╝██╔════╝██╔═══██╗████╗  ██║╚██╗██╔╝
-██████╔╝█████╗  ██║     ██║   ██║██╔██╗ ██║ ╚███╔╝ 
-██╔══██╗██╔══╝  ██║     ██║   ██║██║╚██╗██║ ██╔██╗ 
+██████╔╝█████╗  ██║     ██║   ██║██╔██╗ ██║ ╚███╔╝
+██╔══██╗██╔══╝  ██║     ██║   ██║██║╚██╗██║ ██╔██╗
 ██║  ██║███████╗╚██████╗╚██████╔╝██║ ╚████║██╔╝ ██╗
 ╚═╝  ╚═╝╚══════╝ ╚═════╝ ╚═════╝ ╚═╝  ╚═══╝╚═╝  ╚═╝
 ```
 
-**Advanced Automated Reconnaissance Framework**
+**Professional Penetration Testing Framework**
 
 ![Python](https://img.shields.io/badge/Python-3.8+-blue?style=flat-square&logo=python)
-![Platform](https://img.shields.io/badge/Platform-Linux%20%7C%20macOS-lightgrey?style=flat-square)
+![Version](https://img.shields.io/badge/Version-4.0-red?style=flat-square)
+![Modules](https://img.shields.io/badge/Modules-30+-purple?style=flat-square)
 ![License](https://img.shields.io/badge/License-MIT-green?style=flat-square)
-![Version](https://img.shields.io/badge/Version-2.0-red?style=flat-square)
+![Author](https://img.shields.io/badge/Author-Amith%20Krishna%20MK-orange?style=flat-square)
 
-*OSINT → SubEnum → DNS → HTTP → Ports → CVE → Secrets → Report*
+**Created by Amith Krishna MK**
 
-> ⚠️ **For authorized penetration testing only. Always obtain written permission before scanning any target.**
+*OSINT · SubEnum · DNS · HTTP · CMS · Paths · Ports · CVE/RCE · SQLi · XSS · LFI*
+*CORS · SSRF · SSTI · XXE · GraphQL · S3 · WAF · CISA KEV · Nuclei · LinkPiece*
+
+> ⚠️ **For authorized penetration testing only. Always obtain written permission.**
 
 </div>
 
 ---
 
-## What is RECONX?
+## Overview
 
-RECONX is a full-chain automated recon framework built for VAPT engagements. It chains 8 phases of intelligence gathering — from passive OSINT to active scanning to CVE correlation — into a single command, then produces structured JSON and Markdown reports.
-
----
-
-## Features
-
-| Module | Capability |
-|--------|-----------|
-| **OSINT** | WHOIS, Shodan InternetDB (free, no key), Wayback Machine, Google Dorks |
-| **Subdomain Enum** | subfinder binary, crt.sh (cert transparency), async DNS brute-force |
-| **DNS Analysis** | A/AAAA/MX/NS/TXT/SOA/CAA/DMARC, zone transfer attempts, SPF/DMARC audit |
-| **HTTP Probing** | Async probing, tech stack fingerprinting, security header audit, redirect chains |
-| **Path Discovery** | 40+ sensitive paths (.env, /.git, /actuator, /admin, swagger, etc.) |
-| **Port Scanning** | nmap with 5 scan profiles including stealth mode and NSE vuln scripts |
-| **CVE Lookup** | NVD API cross-reference of discovered service versions (no API key needed) |
-| **Secret Scanning** | AWS keys, GitHub tokens, JWTs, DB strings, API keys in HTML/JS responses |
-| **Reporting** | JSON + Markdown reports with executive summary and severity-sorted findings |
-
----
-
-## Requirements
-
-### System
-```bash
-sudo apt install -y nmap python3-pip whois dnsutils
-```
-
-### Python
-```bash
-pip3 install dnspython requests colorama aiohttp
-```
-
-### Optional (recommended — enhances results)
-```bash
-# Install Go first
-wget https://go.dev/dl/go1.22.0.linux-amd64.tar.gz
-sudo tar -C /usr/local -xzf go1.22.0.linux-amd64.tar.gz
-export PATH=$PATH:/usr/local/go/bin
-
-# Then install Go-based tools
-go install github.com/projectdiscovery/subfinder/v2/cmd/subfinder@latest
-go install github.com/projectdiscovery/httpx/cmd/httpx@latest
-go install github.com/owasp-amass/amass/v4/...@master
-
-export PATH=$PATH:~/go/bin
-```
-
-> RECONX auto-detects subfinder/httpx/amass — falls back to pure Python if not installed.
+RECONX v4.0 is a professional-grade automated penetration testing framework with **30+ modules** across **Tier 1–4** of active offensive security. It supports both **full engagement scans** and **single-module targeted testing** — run exactly what you need.
 
 ---
 
@@ -82,53 +39,80 @@ export PATH=$PATH:~/go/bin
 ```bash
 git clone https://github.com/yourusername/reconx.git
 cd reconx
-pip3 install -r requirements.txt
+pip3 install dnspython requests colorama aiohttp beautifulsoup4
 chmod +x reconx.py
+```
+
+### Optional (enhances results significantly)
+```bash
+# Go tools
+go install github.com/projectdiscovery/subfinder/v2/cmd/subfinder@latest
+go install github.com/projectdiscovery/httpx/cmd/httpx@latest
+go install github.com/projectdiscovery/nuclei/v3/cmd/nuclei@latest
+nuclei -update-templates
+export PATH=$PATH:~/go/bin
+
+# System tools
+sudo apt install -y nmap whois dnsutils wpscan
 ```
 
 ---
 
 ## Usage
 
-### Basic Scan
+### Full Scan (all 30 modules)
 ```bash
-python3 reconx.py -d example.com
+python3 reconx.py -d target.com --full
+python3 reconx.py -d target.com --full --scan-type vuln
+python3 reconx.py -d target.com --full --shodan-key YOUR_KEY
+python3 reconx.py -d target.com --full -w /usr/share/seclists/Discovery/DNS/subdomains-top1million-5000.txt
 ```
 
-### Full Scan (all ports, NSE vuln scripts)
+### Single Module Scans
 ```bash
-python3 reconx.py -d example.com --scan-type full
-```
+# Reconnaissance
+python3 reconx.py -d target.com --module osint
+python3 reconx.py -d target.com --module subdomains
+python3 reconx.py -d target.com --module dns
+python3 reconx.py -d target.com --module http
+python3 reconx.py -d target.com --module ports
 
-### Vuln Scan (nmap NSE + CVE lookup)
-```bash
-python3 reconx.py -d example.com --scan-type vuln
-```
+# CMS & Web
+python3 reconx.py -d target.com --module cms
+python3 reconx.py -d target.com --module paths
 
-### Stealth Mode (slow, evasive, fragmented packets)
-```bash
-python3 reconx.py -d example.com --scan-type stealth
-```
+# Active Vulnerability Testing
+python3 reconx.py -d target.com --module sqli
+python3 reconx.py -d target.com --module xss
+python3 reconx.py -d target.com --module lfi
+python3 reconx.py -d target.com --module ssrf
+python3 reconx.py -d target.com --module ssti
+python3 reconx.py -d target.com --module xxe
+python3 reconx.py -d target.com --module cors
+python3 reconx.py -d target.com --module proto
+python3 reconx.py -d target.com --module smuggle
+python3 reconx.py -d target.com --module redirect
 
-### With Shodan API Key (richer results)
-```bash
-python3 reconx.py -d example.com --shodan-key YOUR_API_KEY
-```
+# Smart Recon
+python3 reconx.py -d target.com --module jsanalysis
+python3 reconx.py -d target.com --module graphql
+python3 reconx.py -d target.com --module s3
+python3 reconx.py -d target.com --module asn
+python3 reconx.py -d target.com --module certs
+python3 reconx.py -d target.com --module waf
+python3 reconx.py -d target.com --module favicon
 
-### Custom Wordlist (SecLists recommended)
-```bash
-python3 reconx.py -d example.com -w /usr/share/seclists/Discovery/DNS/subdomains-top1million-5000.txt
-```
+# CVE & Intelligence
+python3 reconx.py -d target.com --module cve
+python3 reconx.py -d target.com --module nuclei
 
-### Skip Specific Phases
-```bash
-python3 reconx.py -d example.com --skip-nmap --skip-cve
-python3 reconx.py -d example.com --skip-subdomains --skip-osint
-```
+# Cloud & Infrastructure
+python3 reconx.py -d target.com --module cloudmeta
+python3 reconx.py -d target.com --module ipv6
 
-### Custom Output Directory
-```bash
-python3 reconx.py -d example.com --output ./pentest/client-name/recon
+# Audit & Harvest
+python3 reconx.py -d target.com --module headers
+python3 reconx.py -d target.com --module linkpiece
 ```
 
 ---
@@ -136,129 +120,102 @@ python3 reconx.py -d example.com --output ./pentest/client-name/recon
 ## All Flags
 
 ```
--d, --domain           Target domain (required)
---scan-type            stealth | quick | default | full | vuln
---output               Output directory (default: ./reconx_output)
--w, --wordlist         Path to custom subdomain wordlist
---shodan-key           Shodan API key for full host data
---skip-osint           Skip OSINT phase
---skip-subdomains      Skip subdomain enumeration
---skip-http            Skip HTTP probing
---skip-paths           Skip interesting path discovery
---skip-nmap            Skip port scanning
---skip-cve             Skip CVE correlation
---skip-secrets         Skip secret/credential scanning
+-d,  --domain           Target domain (required)
+     --full             Run all 30 modules
+     --module           Run single module (see list below)
+     --scan-type        stealth | quick | default | full | vuln
+     --output           Output directory (default: ./reconx_output)
+-w,  --wordlist         Custom subdomain wordlist
+     --shodan-key       Shodan API key
+     --nuclei-severity  Nuclei severity filter (default: medium,high,critical)
 ```
 
 ---
 
-## Scan Profiles
+## Module Reference
 
-| Profile | Speed | Ports | Description |
-|---------|-------|-------|-------------|
-| `stealth` | Very slow | Common | Fragmented packets, low timing (T2) — evades basic IDS |
-| `quick` | Fast | Top 100 | Fast overview scan |
-| `default` | Medium | 24 key ports | Service detection + default NSE scripts |
-| `full` | Slow | All 65535 | Complete port sweep with service/version detection |
-| `vuln` | Medium | Key ports | Runs `vuln`, `auth`, `default` NSE scripts |
+| Module | Tier | Description |
+|--------|------|-------------|
+| `osint` | Passive | WHOIS, Shodan InternetDB, Wayback Machine, Email harvest, Google Dorks |
+| `subdomains` | Active | subfinder + amass + crt.sh + async DNS brute (150 concurrent) |
+| `dns` | Active | All record types, zone transfer, SPF/DMARC audit |
+| `http` | Active | Async HTTP probing, tech fingerprinting (30+ frameworks) |
+| `cms` | Active | WordPress deep scan, Joomla, Drupal, wpscan integration |
+| `paths` | Active | 120+ sensitive paths discovery |
+| `ports` | Active | nmap with 5 profiles incl. stealth mode & NSE vuln scripts |
+| `cve` | Intel | CVE/RCE fingerprinting + CISA KEV + NVD API |
+| `sqli` | Exploit | SQL injection — error-based & time-based |
+| `xss` | Exploit | Reflected XSS testing |
+| `lfi` | Exploit | Local File Inclusion with /etc/passwd confirmation |
+| `cors` | Exploit | CORS misconfiguration with credential flag |
+| `ssrf` | Exploit | SSRF → cloud metadata (AWS/GCP/Azure) |
+| `ssti` | Exploit | SSTI → RCE (Jinja2, Twig, Spring SpEL, ERB, Freemarker) |
+| `xxe` | Exploit | XXE injection — file read & SSRF via XML |
+| `proto` | Exploit | Prototype pollution in Node.js/Express apps |
+| `smuggle` | Exploit | HTTP Request Smuggling CL.TE/TE.CL probe |
+| `redirect` | Exploit | Open redirect parameter detection |
+| `jsanalysis` | Smart | JS deep analysis — hidden APIs, secrets, S3 refs, internal hosts |
+| `graphql` | Smart | GraphQL introspection, batch DoS, sensitive type detection |
+| `s3` | Smart | AWS S3 + Azure Blob public access enumeration |
+| `asn` | Smart | ASN & IP range / BGP prefix discovery |
+| `certs` | Smart | TLS cert SANs, expiry, weak cipher detection |
+| `waf` | Smart | 9 WAF vendor detection + bypass techniques |
+| `favicon` | Smart | Favicon hash for Shodan pivoting |
+| `cloudmeta` | Cloud | AWS/GCP/Azure/DO metadata endpoint testing |
+| `ipv6` | Cloud | IPv6 scanning (often bypasses firewalls) |
+| `headers` | Audit | Security header audit + cookie flags + version disclosure |
+| `nuclei` | Intel | Nuclei template scanning (9000+ templates) |
+| `linkpiece` | Harvest | Endpoints, params, emails, APIs, internal IPs, subdomains from links |
 
 ---
 
-## Output Files
+## Built-in CVE/RCE Fingerprints
 
-After each scan, RECONX creates two files in your output directory:
+| CVE | Name | Severity |
+|-----|------|----------|
+| CVE-2021-44228 | Log4Shell JNDI injection | CRITICAL |
+| CVE-2022-22965 | Spring4Shell RCE | CRITICAL |
+| CVE-2017-5638 | Apache Struts S2-045 RCE | CRITICAL |
+| CVE-2024-6387 | regreSSHion OpenSSH RCE | CRITICAL |
+| CVE-2024-4577 | PHP CGI Argument Injection | CRITICAL |
+| CVE-2024-23897 | Jenkins CLI RCE | CRITICAL |
+| CVE-2023-34362 | MOVEit SQLi RCE | CRITICAL |
+| CVE-2023-3519 | Citrix Bleed RCE | CRITICAL |
+| CVE-2022-26134 | Confluence OGNL RCE | CRITICAL |
+| CVE-2021-26855 | ProxyLogon Exchange RCE | CRITICAL |
+| CVE-2020-1472 | Zerologon priv esc | CRITICAL |
+| CVE-2020-14882 | WebLogic Auth Bypass | CRITICAL |
+| CVE-2019-0708 | BlueKeep RDP RCE | CRITICAL |
+| CVE-2018-7600 | Drupalgeddon2 RCE | CRITICAL |
+| CVE-2017-0144 | EternalBlue SMB RCE | CRITICAL |
+| CVE-2014-6271 | Shellshock RCE | CRITICAL |
+
+---
+
+## Output
 
 ```
 reconx_output/
-├── reconx_example.com_20240904_143022.json    ← Machine-readable full data
-└── reconx_example.com_20240904_143022.md      ← Human-readable report
-```
-
-### JSON Report Structure
-```json
-{
-  "meta": { "tool": "RECONX v2.0", "target": "...", "timestamp": "..." },
-  "osint": { "whois": {}, "shodan": {} },
-  "subdomains": { "sub.example.com": "1.2.3.4" },
-  "dns": { "records": {}, "findings": [] },
-  "http": { "sub.example.com": { "status": 200, "title": "...", "tech_stack": [] } },
-  "paths": [ { "url": "...", "status": 200, "size": 1234 } ],
-  "ports": { "1.2.3.4": { "hosts": [], "ports": [] } },
-  "cves": [ { "cve_id": "CVE-...", "score": 9.8, "severity": "CRITICAL" } ],
-  "secrets": [ { "name": "AWS Access Key", "url": "..." } ],
-  "findings_summary": []
-}
-```
-
----
-
-## What RECONX Detects
-
-**DNS Issues**
-- Zone transfer vulnerabilities (AXFR)
-- Missing/weak SPF records (email spoofing risk)
-- Missing DMARC records (phishing risk)
-
-**Web Issues**
-- Missing security headers (CSP, HSTS, X-Frame-Options, etc.)
-- Exposed sensitive paths (.env, .git, /actuator, /admin, swagger)
-- Technology stack fingerprinting
-
-**Infrastructure Issues**
-- Risky services (Telnet, FTP, Redis, MongoDB, Docker API)
-- Known CVEs in discovered service versions (via NVD API)
-- Shodan-flagged vulnerabilities (via InternetDB)
-
-**Secrets & Credentials**
-- AWS Access/Secret Keys
-- GitHub/GitLab tokens
-- Stripe/SendGrid API keys
-- JWT tokens
-- Database connection strings
-- Hardcoded passwords in JS files
-
----
-
-## Recommended Wordlists (SecLists)
-
-```bash
-# Install SecLists
-sudo apt install seclists
-
-# Or clone manually
-git clone https://github.com/danielmiessler/SecLists.git /usr/share/seclists
-
-# Good wordlists for RECONX:
-/usr/share/seclists/Discovery/DNS/subdomains-top1million-5000.txt    # Fast
-/usr/share/seclists/Discovery/DNS/subdomains-top1million-20000.txt   # Thorough
-/usr/share/seclists/Discovery/DNS/dns-Jhaddix.txt                   # Comprehensive
+├── reconx_target.com_TIMESTAMP.json    ← Machine-readable full data
+├── reconx_target.com_TIMESTAMP.html    ← Dark HTML dashboard
+└── reconx_target.com_TIMESTAMP.md      ← Markdown report
 ```
 
 ---
 
 ## Legal Disclaimer
 
-RECONX is designed for **authorized security testing only**.
-
-- Only use against systems you own or have **explicit written permission** to test
-- Unauthorized scanning may violate the Computer Fraud and Abuse Act (CFAA), the Computer Misuse Act, and equivalent laws in your jurisdiction
-- The authors take no responsibility for misuse of this tool
+RECONX is for **authorized security testing only**.
+Unauthorized use may violate CFAA, Computer Misuse Act, and local laws.
 
 ---
 
-## Contributing
+## Author
 
-Pull requests welcome. Planned features:
-- [ ] Screenshot capture (gowitness integration)
-- [ ] Directory brute-force (ffuf/gobuster integration)
-- [ ] CORS misconfiguration detection
-- [ ] S3 bucket enumeration
-- [ ] Nuclei template scanning
-- [ ] HTML report with charts
-- [ ] Slack/Discord webhook notifications
+**Amith Krishna MK**
 
 ---
 
 ## License
 
-MIT License — see [LICENSE](LICENSE) for details.
+MIT — see LICENSE
